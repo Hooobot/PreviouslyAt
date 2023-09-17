@@ -1,8 +1,22 @@
 import React, { useRef, useEffect } from 'react';
 import './App.css';
+import IconList from './IconList';
 
 const App = () => {
   const canvasRef = useRef(null);
+
+  const handleDrop = (e) => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const iconName = e.dataTransfer.getData('iconName');
+
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Draw icon based on iconName (For now, let's draw text)
+    ctx.fillText(iconName, x, y);
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -59,11 +73,20 @@ const App = () => {
     };
   }, []);
 
-  return (
+ return (
     <div className="App">
       <header className="App-header">
-        {/* Added a border to distinguish the canvas */}
-        <canvas ref={canvasRef} width={600} height={400} style={{ border: '2px solid #000' }} />
+        <div className="icon-list-wrapper">
+          <IconList />
+        </div>
+        <canvas 
+          ref={canvasRef} 
+          width={600} 
+          height={400} 
+          style={{ border: '2px solid #000' }}
+          onDrop={handleDrop}
+          onDragOver={(e) => e.preventDefault()}
+        />
       </header>
     </div>
   );
