@@ -7,55 +7,51 @@ const App = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+    let rectX = 10, rectY = 10;  // Current position of the rectangle
+    let offsetX = 0, offsetY = 0;  // Offset from the top-left corner of the rectangle
+    let isDragging = false;  // Whether the rectangle is being dragged
 
-    // Initialize the rectangle
-    const drawRect = (x, y) => {
+    const drawRect = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear the canvas
       ctx.fillStyle = '#f00';
-      ctx.fillRect(x, y, 50, 50);
+      ctx.fillRect(rectX, rectY, 50, 50);  // Draw the rectangle at its current position
     };
 
-    drawRect(10, 10);
-
-    let dragItem = null;
-
-    // Handle Mouse Down Event
     const handleMouseDown = (e) => {
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-
-      // Check if the click is within the rectangle
-      if (x > 10 && x < 60 && y > 10 && y < 60) {
-        dragItem = { x, y };
+      
+      if (x >= rectX && x <= rectX + 50 && y >= rectY && y <= rectY + 50) {
+        isDragging = true;
+        offsetX = x - rectX;
+        offsetY = y - rectY;
       }
     };
 
-    // Handle Mouse Up Event
     const handleMouseUp = () => {
-      dragItem = null;
+      isDragging = false;
     };
 
-    // Handle Mouse Move Event
     const handleMouseMove = (e) => {
-      if (dragItem) {
+      if (isDragging) {
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        // Clear the canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        rectX = x - offsetX;
+        rectY = y - offsetY;
 
-        // Draw the rectangle at the new position
-        drawRect(x - 25, y - 25);
+        drawRect();
       }
     };
 
-    // Add Event Listeners
+    drawRect();  // Initial drawing
+
     canvas.addEventListener('mousedown', handleMouseDown);
     canvas.addEventListener('mouseup', handleMouseUp);
     canvas.addEventListener('mousemove', handleMouseMove);
 
-    // Cleanup
     return () => {
       canvas.removeEventListener('mousedown', handleMouseDown);
       canvas.removeEventListener('mouseup', handleMouseUp);
@@ -66,7 +62,8 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <canvas ref={canvasRef} width={600} height={400} />
+        {/* Added a border to distinguish the canvas */}
+        <canvas ref={canvasRef} width={600} height={400} style={{ border: '2px solid #000' }} />
       </header>
     </div>
   );
