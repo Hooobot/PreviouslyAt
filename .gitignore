@@ -7,11 +7,19 @@
 
 # React frontend
 /frontend/node_modules/
-/frontend/.env
+/frontend/.env*
 /frontend/package-lock.json
 /frontend/yarn.lock
 /frontend/build/
 /frontend/.cache/
+/frontend/.pnp
+/frontend/.pnp.js
+/frontend/coverage
+/frontend/build
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+
 
 # IDE and editor files
 .idea/
