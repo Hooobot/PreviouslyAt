@@ -1,11 +1,13 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 import IconList from "./IconList";
 import { useCanvas } from "./Canvas";
 
 const App = () => {
   const canvasRef = useRef(null);
-  const { icons, addIcon } = useCanvas();
+  const { icons, addIcon, moveIcon } = useCanvas(); // Destructure moveIcon from the context
+  const [isDragging, setIsDragging] = useState(null);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -21,21 +23,15 @@ const App = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    let rectX = 10,
-      rectY = 10;
-    let offsetX = 0,
-      offsetY = 0;
-    let isDragging = false;
-
     const drawIcons = () => {
-      icons.forEach((icon) => {
+      icons.forEach((icon, index) => {
         ctx.fillText(icon.iconName, icon.x, icon.y);
       });
     };
 
-    const drawRect = () => {
-      ctx.fillStyle = "#f00";
-      ctx.fillRect(rectX, rectY, 50, 50);
+    const renderCanvas = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawIcons();
     };
 
     const handleMouseDown = (e) => {
@@ -43,33 +39,30 @@ const App = () => {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      if (x >= rectX && x <= rectX + 50 && y >= rectY && y <= rectY + 50) {
-        isDragging = true;
-        offsetX = x - rectX;
-        offsetY = y - rectY;
-      }
+      icons.forEach((icon, index) => {
+        if (
+          x >= icon.x &&
+          x <= icon.x + 50 &&
+          y >= icon.y &&
+          y <= icon.y + 50
+        ) {
+          setIsDragging(index);
+          setOffset({ x: x - icon.x, y: y - icon.y });
+        }
+      });
     };
 
     const handleMouseUp = () => {
-      isDragging = false;
+      setIsDragging(null);
     };
 
     const handleMouseMove = (e) => {
-      if (isDragging) {
+      if (isDragging !== null) {
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-
-        rectX = x - offsetX;
-        rectY = y - offsetY;
-        renderCanvas();
+        moveIcon(isDragging, x - offset.x, y - offset.y);
       }
-    };
-
-    const renderCanvas = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawRect();
-      drawIcons();
     };
 
     renderCanvas();
@@ -82,7 +75,7 @@ const App = () => {
       canvas.removeEventListener("mouseup", handleMouseUp);
       canvas.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [icons]);
+  }, [icons, isDragging, offset.x, offset.y, moveIcon]);
 
   return (
     <div className="App">
