@@ -13,9 +13,18 @@ export const CanvasProvider = ({ children }) => {
     setIcons((prevIcons) => [...prevIcons, { iconName, x, y }]);
   };
 
+  const moveIcon = (index, x, y) => {
+    setIcons((prevIcons) => {
+      const newIcons = [...prevIcons];
+      newIcons[index] = { ...newIcons[index], x, y };
+      return newIcons;
+    });
+  };
+
   const value = {
     icons,
     addIcon,
+    moveIcon,
   };
 
   return (
