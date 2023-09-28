@@ -9,8 +9,8 @@ export const useCanvas = () => {
 export const CanvasProvider = ({ children }) => {
   const [icons, setIcons] = useState([]);
 
-  const addIcon = (iconName, x, y) => {
-    setIcons((prevIcons) => [...prevIcons, { iconName, x, y }]);
+  const addIcon = (iconName, x, y, width, height) => {
+    setIcons((prevIcons) => [...prevIcons, { iconName, x, y, width, height }]);
   };
 
   const moveIcon = (index, x, y) => {
