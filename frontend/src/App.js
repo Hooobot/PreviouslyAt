@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 import IconList from "./IconList";
 import { useCanvas } from "./Canvas";
+import githubImage from "./assets/github.png";
 
 const App = () => {
   const canvasRef = useRef(null);
@@ -13,9 +14,10 @@ const App = () => {
     e.preventDefault();
     const canvas = canvasRef.current;
     const iconName = e.dataTransfer.getData("iconName");
+
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const x = e.clientX - rect.left; // Ensure this is the top-left x coordinate of where you want the image
+    const y = e.clientY - rect.top; // Ensure this is the top-left y coordinate of where you want the image
     addIcon(iconName, x, y);
   };
 
@@ -23,9 +25,29 @@ const App = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
+    // const drawIcons = () => {
+    //   icons.forEach((icon, index) => {
+    //     ctx.fillText(icon.iconName, icon.x, icon.y);
+    //   });
+    // };
     const drawIcons = () => {
-      icons.forEach((icon, index) => {
-        ctx.fillText(icon.iconName, icon.x, icon.y);
+      icons.forEach((icon) => {
+        const img = new Image();
+        img.src = githubImage;
+        img.onload = () => {
+          // Calculate scale ratio to maintain the aspect ratio of the image
+          const scale = Math.min(
+            canvas.width / img.width,
+            canvas.height / img.height
+          );
+
+          // Calculate the width and height of the image after scaling
+          const imgWidth = img.width * scale;
+          const imgHeight = img.height * scale;
+
+          // Draw the image on the canvas at the specified x, y coordinates with the scaled width and height
+          ctx.drawImage(img, icon.x, icon.y, imgWidth, imgHeight);
+        };
       });
     };
 
