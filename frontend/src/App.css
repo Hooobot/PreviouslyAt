@@ -3,7 +3,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: whitesmoke;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@
   width: 50px;
   height: 50px;
   margin: 5px;
-  background-color: blue!important;
+  background-color: blue !important;
   color: white;
   text-align: center;
   line-height: 50px;
