@@ -102,12 +102,13 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
+        <h1 className="title">PreviouslyAt</h1>
         <div className="icon-list-wrapper">
           <IconList />
         </div>
         <canvas
           ref={canvasRef}
-          width={600}
+          width={800}
           height={400}
           style={{ border: "2px solid #000" }}
           onDrop={handleDrop}
