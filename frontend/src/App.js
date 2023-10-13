@@ -6,8 +6,11 @@ import githubImage from "./assets/github.png";
 
 const App = () => {
   const canvasRef = useRef(null);
-  const { icons, addIcon, moveIcon } = useCanvas(); // Destructure moveIcon from the context
+  const { icons, addIcon, moveIcon, resizeIcon } = useCanvas(); // Destructure moveIcon from the context
+  const [iconSize, setIconSize] = useState(100);
   const [isDragging, setIsDragging] = useState(null);
+  const [isResizing, setIsResizing] = useState(null);
+  const [handleResize, setResizeHandle] = useState(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const handleDrop = (e) => {
@@ -25,28 +28,13 @@ const App = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    // const drawIcons = () => {
-    //   icons.forEach((icon, index) => {
-    //     ctx.fillText(icon.iconName, icon.x, icon.y);
-    //   });
-    // };
     const drawIcons = () => {
       icons.forEach((icon) => {
         const img = new Image();
         img.src = githubImage;
         img.onload = () => {
-          // Calculate scale ratio to maintain the aspect ratio of the image
-          const scale = Math.min(
-            canvas.width / img.width,
-            canvas.height / img.height
-          );
-
-          // Calculate the width and height of the image after scaling
-          const imgWidth = img.width * scale;
-          const imgHeight = img.height * scale;
-
           // Draw the image on the canvas at the specified x, y coordinates with the scaled width and height
-          ctx.drawImage(img, icon.x, icon.y, imgWidth, imgHeight);
+          ctx.drawImage(img, icon.x, icon.y, iconSize, iconSize);
         };
       });
     };
@@ -76,14 +64,16 @@ const App = () => {
 
     const handleMouseUp = () => {
       setIsDragging(null);
+      setIsResizing(null);
+      setResizeHandle(null);
     };
 
     const handleMouseMove = (e) => {
       if (isDragging !== null) {
         const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        moveIcon(isDragging, x - offset.x, y - offset.y);
+        const x = e.clientX - rect.left - offset.x;
+        const y = e.clientY - rect.top - offset.y;
+        moveIcon(isDragging, x, y);
       }
     };
 
@@ -97,7 +87,7 @@ const App = () => {
       canvas.removeEventListener("mouseup", handleMouseUp);
       canvas.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [icons, isDragging, offset.x, offset.y, moveIcon]);
+  }, [icons, isDragging, offset.x, offset.y, moveIcon, iconSize]);
 
   return (
     <div className="App">
