@@ -107,10 +107,10 @@ const App = () => {
           <IconList />
         </div>
         <canvas
+          className="in-canvas"
           ref={canvasRef}
           width={800}
           height={400}
-          style={{ border: "2px solid #000" }}
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
         />

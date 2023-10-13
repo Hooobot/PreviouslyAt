@@ -46,3 +46,8 @@
   padding-bottom: 2rem;
   margin-top: 0;
 }
+
+.in-canvas {
+  border: 2px solid #000;
+  background-image: url("./assets/1LCanvas.png");
+}
