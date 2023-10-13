@@ -1,16 +1,25 @@
-.App {
-  text-align: center;
-  background: linear-gradient(45deg, #f06, #9f6);
+body {
 }
 
-.App-header {
+.title {
+  font-size: 3rem;
+  background: linear-gradient(black, whitesmoke 100%);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-top: 0;
+}
+
+.App {
   background-color: whitesmoke;
+  color: white;
   display: flex;
   flex-direction: column;
+  text-align: center;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
@@ -35,16 +44,6 @@
 
 .icon-list-wrapper {
   margin-right: 20px;
-}
-
-.title {
-  font-size: 3rem;
-  background: linear-gradient(black 0%, rgba(0, 0, 0, 0) 100%);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  width: 100%;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  margin-top: 0;
 }
 
 .in-canvas {

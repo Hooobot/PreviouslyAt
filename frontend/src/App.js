@@ -101,20 +101,18 @@ const App = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1 className="title">PreviouslyAt</h1>
-        <div className="icon-list-wrapper">
-          <IconList />
-        </div>
-        <canvas
-          className="in-canvas"
-          ref={canvasRef}
-          width={800}
-          height={400}
-          onDrop={handleDrop}
-          onDragOver={(e) => e.preventDefault()}
-        />
-      </header>
+      <h1 className="title">PreviouslyAt</h1>
+      <div className="icon-list-wrapper">
+        <IconList />
+      </div>
+      <canvas
+        className="in-canvas"
+        ref={canvasRef}
+        width={800}
+        height={400}
+        onDrop={handleDrop}
+        onDragOver={(e) => e.preventDefault()}
+      />
     </div>
   );
 };
